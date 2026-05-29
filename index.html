@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#fdf8f2" />
+  <meta name="description" content="Word Search — fun vocabulary game for kids and EFL learners" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Word Search" />
+  <title>Word Search</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HOME SCREEN
+═══════════════════════════════════════════ -->
+<div id="screen-home" class="screen active">
+  <div class="home-hero">
+    <div class="home-logo">Word<span>Search</span> 🔍</div>
+    <div class="home-sub">Find words, have fun, learn more!</div>
+  </div>
+
+  <div class="home-grid-preview" id="home-preview"></div>
+
+  <div class="home-btns">
+    <button class="btn btn-primary btn-lg btn-full" onclick="initSetup()">
+      ▶ Play Now
+    </button>
+    <button class="btn btn-secondary btn-lg btn-full" onclick="showLeaderboard()">
+      🏆 Leaderboard
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SETUP SCREEN
+═══════════════════════════════════════════ -->
+<div id="screen-setup" class="screen">
+  <div class="app-header">
+    <button class="btn btn-ghost btn-icon" onclick="showScreen('home')">←</button>
+    <h1>🔧 Game Setup</h1>
+    <div style="width:40px"></div>
+  </div>
+
+  <div class="setup-content">
+
+    <!-- Difficulty -->
+    <div class="setup-card">
+      <h3>⚡ Difficulty</h3>
+      <div class="toggle-group">
+        <button class="btn diff-btn" data-diff="easy"   onclick="App.difficulty='easy';  updateDifficultyUI()">🌱 Easy</button>
+        <button class="btn diff-btn" data-diff="medium" onclick="App.difficulty='medium';updateDifficultyUI()">🔥 Medium</button>
+        <button class="btn diff-btn" data-diff="hard"   onclick="App.difficulty='hard';  updateDifficultyUI()">💀 Hard</button>
+      </div>
+      <div style="margin-top:10px">
+        <div class="form-col">
+          <label>Grid Size</label>
+          <select id="grid-size-select" onchange="App.gridSize=parseInt(this.value)"></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timer -->
+    <div class="setup-card">
+      <h3>⏱ Timer Mode</h3>
+      <div class="toggle-group">
+        <button class="btn timer-btn" data-timer="countdown" onclick="App.timerMode='countdown';updateTimerModeUI()">⬇ Countdown</button>
+        <button class="btn timer-btn" data-timer="stopwatch" onclick="App.timerMode='stopwatch';updateTimerModeUI()">⬆ Stopwatch</button>
+      </div>
+    </div>
+
+    <!-- Word Source -->
+    <div class="setup-card">
+      <h3>📚 Word List</h3>
+      <div class="toggle-group" style="margin-bottom:14px">
+        <button class="btn source-btn" data-source="builtin" onclick="App.wordSource='builtin';updateSourceUI()">📖 Built-in</button>
+        <button class="btn source-btn" data-source="custom"  onclick="App.wordSource='custom'; updateSourceUI()">✏️ Custom</button>
+      </div>
+
+      <!-- Built-in panel -->
+      <div id="builtin-panel">
+        <div class="form-row">
+          <div class="form-col">
+            <label>Grade Level</label>
+            <select id="grade-select" onchange="App.grade=this.value;refreshTopics()"></select>
+          </div>
+          <div class="form-col">
+            <label>Topic</label>
+            <select id="topic-select" onchange="App.topic=this.value"></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom panel -->
+      <div id="custom-panel">
+        <label style="font-size:0.85rem;font-weight:700;color:var(--muted);display:block;margin-bottom:6px">Enter your words</label>
+        <textarea id="custom-input" placeholder="One word per line, or separate with commas&#10;&#10;APPLE&#10;BANANA&#10;ORANGE&#10;..."></textarea>
+        <div class="custom-hint">⚠️ Letters only · 2–15 characters · max 20 words</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-lg btn-full" onclick="startGame()">
+      🚀 Start Game!
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     GAME SCREEN
+═══════════════════════════════════════════ -->
+<div id="screen-game" class="screen">
+  <div class="game-topbar">
+    <button class="btn btn-ghost btn-icon" onclick="stopTimer();showScreen('home')" title="Quit">✕</button>
+    <div class="stat-pill timer">
+      <span class="label">Time</span>
+      <span class="value" id="timer-display">03:00</span>
+    </div>
+    <div class="stat-pill score">
+      <span class="label">Score</span>
+      <span class="value" id="score-display">0</span>
+    </div>
+    <div class="stat-pill">
+      <span class="label">Found</span>
+      <span class="value" id="found-count">0/0</span>
+    </div>
+  </div>
+
+  <div class="game-main">
+    <div class="grid-wrapper">
+      <div id="grid-container"></div>
+    </div>
+    <div class="word-list-wrapper">
+      <h4>Find these words</h4>
+      <div id="word-list"></div>
+    </div>
+  </div>
+
+  <!-- Celebration pop -->
+  <div id="celebrate">✨ Found!</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     RESULT SCREEN
+═══════════════════════════════════════════ -->
+<div id="screen-result" class="screen">
+  <div class="result-card">
+    <div class="result-title">🎉 Game Over!</div>
+
+    <div id="result-timeout" style="display:none">⏰ Time's up!</div>
+
+    <div class="big-score" id="result-score">0</div>
+    <div style="font-size:0.85rem;color:var(--muted);font-weight:600;margin-top:-10px">TOTAL SCORE</div>
+
+    <div class="result-stats">
+      <div class="result-stat">
+        <span class="rs-label">Words Found</span>
+        <span class="rs-value" id="result-found">—</span>
+      </div>
+      <div class="result-stat">
+        <span class="rs-label">Time Used</span>
+        <span class="rs-value" id="result-time">—</span>
+      </div>
+      <div class="result-stat">
+        <span class="rs-label">Difficulty</span>
+        <span class="rs-value" id="result-diff">—</span>
+      </div>
+    </div>
+
+    <div id="result-missed"></div>
+
+    <!-- Save score -->
+    <div class="name-row">
+      <input type="text" id="player-name" placeholder="Your name" maxlength="20" />
+      <button class="btn btn-primary" id="submit-score-btn" onclick="submitScore()">💾 Save</button>
+    </div>
+    <div id="rank-badge"></div>
+
+    <div class="result-actions">
+      <button class="btn btn-primary btn-full" onclick="startGame()">🔄 Play Again</button>
+      <button class="btn btn-secondary btn-full" onclick="initSetup()">⚙️ New Setup</button>
+      <button class="btn btn-ghost btn-full" onclick="showLeaderboard()">🏆 Leaderboard</button>
+      <button class="btn btn-ghost btn-full" onclick="showScreen('home')">🏠 Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     LEADERBOARD SCREEN
+═══════════════════════════════════════════ -->
+<div id="screen-leaderboard" class="screen">
+  <div class="app-header">
+    <button class="btn btn-ghost btn-icon" onclick="showScreen('home')">←</button>
+    <h1>🏆 Leaderboard</h1>
+    <button class="btn btn-ghost btn-icon" title="Clear" onclick="if(confirm('Clear all scores?')){Leaderboard.clear();renderLeaderboard()}">🗑</button>
+  </div>
+
+  <div class="lb-content">
+    <div class="lb-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Diff</th>
+            <th>Topic</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="lb-body"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px">
+      <button class="btn btn-primary btn-full" onclick="initSetup()">▶ Play Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════ -->
+<script src="data/words.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/app.js"></script>
+<script>
+  // ── HOME PREVIEW ANIMATION ──
+  (function animatePreview() {
+    const letters = "WORDSEARCHABCDEFGHIJKLMNPQTUVXYZ";
+    const preview = document.getElementById("home-preview");
+    const hlIdx   = [0,1,2,3,6,11,12,13,14]; // "WORD" + "SEARCH" positions
+    for (let i = 0; i < 25; i++) {
+      const d = document.createElement("div");
+      d.className = "hcell" + (hlIdx.includes(i) ? " hl" : "");
+      d.textContent = letters[i] || "A";
+      preview.appendChild(d);
+    }
+  })();
+
+  // ── SERVICE WORKER ──
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+
+  // ── GRID CSS VAR FOR CELL SIZING ──
+  const _origRenderGrid = renderGrid;
+  renderGrid = function() {
+    _origRenderGrid();
+    document.getElementById('grid-container').style.setProperty('--gs', App.gridSize);
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+const WORD_DATA = {
+  grade1: {
+    label: "Grade 1",
+    emoji: "🌱",
+    topics: {
+      "Animals": ["CAT","DOG","COW","PIG","HEN","ANT","BEE","FLY","FOX","OWL"],
+      "Colors": ["RED","BLUE","GREEN","PINK","BLACK","WHITE","BROWN","GOLD"],
+      "Numbers": ["ONE","TWO","THREE","FOUR","FIVE","SIX","SEVEN","EIGHT","NINE","TEN"],
+      "Body": ["EYE","EAR","ARM","LEG","NOSE","HAND","FOOT","HEAD","KNEE","BACK"],
+      "Food": ["EGG","MILK","RICE","CAKE","FISH","SOUP","BEAN","CORN","PEAR","PLUM"]
+    }
+  },
+  grade2: {
+    label: "Grade 2",
+    emoji: "🌿",
+    topics: {
+      "Animals": ["BIRD","FROG","BEAR","LION","DUCK","CRAB","WOLF","DEER","GOAT","WORM"],
+      "Colors": ["ORANGE","PURPLE","YELLOW","SILVER","VIOLET","CREAM","IVORY","CORAL"],
+      "School": ["BOOK","DESK","RULER","PENCIL","CLASS","CHAIR","PAPER","BOARD","PAINT","GLUE"],
+      "Food": ["BREAD","CANDY","APPLE","GRAPE","LEMON","ONION","CARROT","PIZZA","JUICE","SALAD"],
+      "Weather": ["RAIN","SNOW","WIND","CLOUD","SUNNY","STORM","FOGGY","THUNDER","HOT","COLD"]
+    }
+  },
+  grade3: {
+    label: "Grade 3",
+    emoji: "🌳",
+    topics: {
+      "Animals": ["RABBIT","MONKEY","PARROT","TURTLE","SPIDER","LIZARD","SEAHORSE","PENGUIN","GIRAFFE","DOLPHIN"],
+      "Transport": ["TRAIN","PLANE","TRUCK","FERRY","ROCKET","BICYCLE","SCOOTER","SUBWAY","TRACTOR","YACHT"],
+      "Nature": ["RIVER","OCEAN","FOREST","DESERT","ISLAND","VALLEY","MOUNTAIN","VOLCANO","JUNGLE","MEADOW"],
+      "Food": ["MANGO","MELON","PEACH","CHERRY","COOKIE","BURGER","NOODLE","CHEESE","BUTTER","WAFFLE"],
+      "Family": ["FATHER","MOTHER","SISTER","BROTHER","COUSIN","UNCLE","AUNT","NEPHEW","NIECE","GRANDPA"]
+    }
+  },
+  grade4: {
+    label: "Grade 4",
+    emoji: "🌲",
+    topics: {
+      "Science": ["GRAVITY","MAGNET","ENERGY","MATTER","LIQUID","SOLID","OXYGEN","CARBON","PHOTON","NEUTRON"],
+      "Geography": ["COUNTRY","CAPITAL","CONTINENT","EQUATOR","LATITUDE","CLIMATE","CULTURE","BORDER","REGION","TERRAIN"],
+      "Animals": ["CHEETAH","ELEPHANT","FLAMINGO","CROCODILE","SCORPION","BUTTERFLY","JELLYFISH","PORCUPINE","WOLVERINE","CHAMELEON"],
+      "Emotions": ["HAPPY","ANGRY","SCARED","NERVOUS","EXCITED","WORRIED","BORED","PROUD","JEALOUS","CURIOUS"],
+      "Sports": ["SOCCER","TENNIS","HOCKEY","BOXING","CYCLING","SURFING","ARCHERY","FENCING","BOWLING","SAILING"]
+    }
+  },
+  grade5: {
+    label: "Grade 5",
+    emoji: "🎋",
+    topics: {
+      "History": ["ANCIENT","EMPIRE","DYNASTY","MEDIEVAL","REPUBLIC","MONARCHY","REVOLUTION","DEMOCRACY","CIVILIZATION","PARLIAMENT"],
+      "Technology": ["DIGITAL","NETWORK","PROGRAM","BATTERY","CIRCUIT","ANTENNA","KEYBOARD","MONITOR","SOFTWARE","DATABASE"],
+      "Literature": ["FICTION","POETRY","AUTHOR","CHAPTER","CLIMAX","SETTING","CONFLICT","NARRATOR","METAPHOR","DIALOGUE"],
+      "Math": ["FRACTION","DECIMAL","ALGEBRA","FORMULA","POLYGON","TRIANGLE","DIAMETER","EQUATION","VARIABLE","CYLINDER"],
+      "Environment": ["RECYCLE","HABITAT","SPECIES","EROSION","DROUGHT","GLACIER","ECOSYSTEM","POLLUTION","BIODIVERSITY","ATMOSPHERE"]
+    }
+  },
+  grade6: {
+    label: "Grade 6",
+    emoji: "🎓",
+    topics: {
+      "Science": ["MOLECULE","ELECTRON","NUCLEUS","PROTEIN","CHROMOSOME","EVOLUTION","PHOTOSYNTHESIS","METABOLISM","HYPOTHESIS","ORGANISM"],
+      "Society": ["JUSTICE","FREEDOM","ECONOMY","POLITICS","INDUSTRY","COMMERCE","WELFARE","RESOURCES","MIGRATION","POPULATION"],
+      "Arts": ["SCULPTURE","PORTRAIT","SYMPHONY","ORCHESTRA","ABSTRACT","CLASSICAL","BAROQUE","RENAISSANCE","PERSPECTIVE","COMPOSITION"],
+      "Philosophy": ["ETHICAL","LOGICAL","RATIONAL","MORAL","VIRTUE","JUSTICE","WISDOM","DEBATE","ARGUMENT","PRINCIPLE"],
+      "Global": ["CURRENCY","INFLATION","EXPORT","IMPORT","TREATY","ALLIANCE","SANCTION","EMBASSY","DIPLOMAT","SOVEREIGNTY"]
+    }
+  }
+};
