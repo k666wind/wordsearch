@@ -3,9 +3,9 @@
 // ============================================================
 
 const DIFFICULTY = {
-  easy:   { label:"Easy",   gridSizes:[10], directions:["R","D"],                      timeLimit:180, multiplier:1 },
-  medium: { label:"Medium", gridSizes:[10,12], directions:["R","D","DR","DL"],          timeLimit:150, multiplier:1.5 },
-  hard:   { label:"Hard",   gridSizes:[12,15], directions:["R","D","DR","DL","L","U","UR","UL"], timeLimit:120, multiplier:2 }
+  easy:   { label:"Easy",   gridSizes:[8,10,12,15], directions:["R","D"],                               timeLimit:180, multiplier:1,   wordCount:8  },
+  medium: { label:"Medium", gridSizes:[8,10,12,15], directions:["R","D","DR","DL"],                     timeLimit:150, multiplier:1.5, wordCount:12 },
+  hard:   { label:"Hard",   gridSizes:[8,10,12,15], directions:["R","D","DR","DL","L","U","UR","UL"],   timeLimit:120, multiplier:2,   wordCount:16 }
 };
 
 const DIR_VECTORS = {

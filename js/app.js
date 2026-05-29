@@ -63,11 +63,18 @@ function updateDifficultyUI() {
   document.querySelectorAll(".diff-btn").forEach(b => {
     b.classList.toggle("active", b.dataset.diff === App.difficulty);
   });
-  const sizes = DIFFICULTY[App.difficulty].gridSizes;
+  // All difficulties now share the same 4 grid sizes
+  const sizes = [8, 10, 12, 15];
   const sizeEl = document.getElementById("grid-size-select");
+  const prev   = App.gridSize;
   sizeEl.innerHTML = sizes.map(s => `<option value="${s}">${s}×${s}</option>`).join("");
-  App.gridSize = sizes[sizes.length - 1];
+  // Keep previous selection if valid, else default to 10
+  App.gridSize = sizes.includes(prev) ? prev : 10;
   sizeEl.value = App.gridSize;
+  // Show word count hint
+  const wc = DIFFICULTY[App.difficulty].wordCount;
+  const hint = document.getElementById("word-count-hint");
+  if (hint) hint.textContent = `🎯 ${wc} words will be picked randomly`;
 }
 
 function updateTimerModeUI() {
@@ -92,15 +99,27 @@ function updateSourceUI() {
 // ============================================================
 // GAME START
 // ============================================================
+function randomPick(arr, n) {
+  return [...arr].sort(() => Math.random() - 0.5).slice(0, n);
+}
+
 function startGame() {
+  const maxWords = DIFFICULTY[App.difficulty].wordCount;
+  const maxLen   = App.gridSize;
+
   // Gather words
   if (App.wordSource === "builtin") {
-    App.words = [...WORD_DATA[App.grade].topics[App.topic]];
+    const pool = WORD_DATA[App.grade].topics[App.topic]
+      .map(w => w.toUpperCase())
+      .filter(w => w.length <= maxLen);
+    App.words = randomPick(pool, maxWords);
   } else {
     const raw = document.getElementById("custom-input").value;
-    App.words = raw.split(/[\n,]+/).map(w => w.trim().toUpperCase()).filter(w => w.length >= 2 && w.length <= 15 && /^[A-Z]+$/.test(w));
-    if (App.words.length < 3) { alert("Please enter at least 3 valid words (letters only, 2-15 chars)."); return; }
-    App.words = App.words.slice(0, 20);
+    const pool = raw.split(/[\n,]+/)
+      .map(w => w.trim().toUpperCase())
+      .filter(w => w.length >= 2 && w.length <= maxLen && /^[A-Z]+$/.test(w));
+    if (pool.length < 3) { alert("Please enter at least 3 valid words (letters only)."); return; }
+    App.words = randomPick(pool, maxWords);
   }
 
   // Build engine
