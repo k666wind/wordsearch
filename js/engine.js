@@ -135,11 +135,14 @@ class Leaderboard {
   static add(entry) {
     // entry: { name, score, time, difficulty, topic, date }
     const all = this.getAll();
+    // Tag with a unique id so rank lookup is reliable
+    entry._id = Date.now() + Math.random().toString(36).slice(2);
     all.push(entry);
     all.sort((a, b) => b.score - a.score);
     const trimmed = all.slice(0, this.MAX);
     localStorage.setItem(this.KEY, JSON.stringify(trimmed));
-    return trimmed.findIndex(e => e === entry || (e.name === entry.name && e.score === entry.score && e.date === entry.date)) + 1;
+    const rank = trimmed.findIndex(e => e._id === entry._id) + 1;
+    return rank > 0 ? rank : trimmed.length; // fallback if trimmed off
   }
 
   static clear() { localStorage.removeItem(this.KEY); }

@@ -379,10 +379,18 @@ function endGame(timeout = false) {
   } else {
     missEl.style.display = "none";
   }
+
+  // Reset save UI for each new game
+  document.getElementById("submit-score-btn").disabled = false;
+  document.getElementById("player-name").value = App.playerName || "";
+  document.getElementById("rank-badge").style.display = "none";
+  document.getElementById("rank-badge").textContent = "";
+  document.getElementById("save-success-msg").style.display = "none";
 }
 
 function submitScore() {
   const name = document.getElementById("player-name").value.trim() || "Player";
+  App.playerName = name; // remember name for next game
   const entry = {
     name,
     score:      App.lastScore.final,
@@ -394,8 +402,17 @@ function submitScore() {
     date:       new Date().toLocaleDateString()
   };
   const rank = Leaderboard.add(entry);
+
+  // Show rank badge
   document.getElementById("rank-badge").textContent = `🏆 Rank #${rank}`;
   document.getElementById("rank-badge").style.display = "";
+
+  // Show success message
+  const msg = document.getElementById("save-success-msg");
+  msg.style.display = "";
+  msg.textContent = `✅ Score saved! You are ranked #${rank} — well done, ${name}!`;
+
+  // Disable button to prevent double save
   document.getElementById("submit-score-btn").disabled = true;
 }
 
